@@ -1,0 +1,26 @@
+{
+  "name": "琼华星海",
+  "short_name": "琼华星海",
+  "description": "梦幻星光花海主题三消 PWA",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0b0820",
+  "theme_color": "#120c2b",
+  "lang": "zh-CN",
+  "icons": [
+    {
+      "src": "/icons/icon-192.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-512.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
