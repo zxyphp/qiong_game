@@ -21,6 +21,7 @@ import { TileCanvasPreview } from './FallbackArt';
 interface WorldMapScreenProps {
   save: PlayerSaveData;
   onBackHome: () => void;
+  onSelectLevel: (levelId: number) => void;
   onOpenSettings: () => void;
   onOpenGallery: () => void;
   onToggleTheme: () => void;
@@ -32,6 +33,7 @@ const ROW_STEP_PX = 94;
 export const WorldMapScreen: React.FC<WorldMapScreenProps> = ({
   save,
   onBackHome,
+  onSelectLevel,
   onOpenSettings,
   onOpenGallery,
   onToggleTheme,
@@ -379,9 +381,25 @@ export const WorldMapScreen: React.FC<WorldMapScreenProps> = ({
               ))}
             </div>
 
-            <div className="mt-5 rounded-2xl bg-starlight-700/45 border border-starlight-400/30 px-4 py-3 text-center text-xs text-starlight-200">
-              Phase 1 架构与星光大地图验收中 · 核心三消棋盘引擎将在 Phase 2 实装上线 ✨
-            </div>
+            {selectedLevel.id <= save.highestUnlockedLevel ? (
+              <button
+                type="button"
+                onClick={() => {
+                  const id = selectedLevel.id;
+                  setSelectedLevel(null);
+                  onSelectLevel(id);
+                }}
+                className="mt-5 w-full py-3.5 rounded-2xl bg-gradient-to-r from-petal-pink via-petal-violet to-petal-cyan font-display text-base font-semibold tracking-wider text-white shadow-glow-pink flex items-center justify-center gap-2 active:scale-[0.98] transition"
+              >
+                <Sparkles className="w-4 h-4" />
+                <span>进入第 {selectedLevel.id} 关</span>
+              </button>
+            ) : (
+              <div className="mt-5 rounded-2xl bg-starlight-700/45 border border-starlight-400/30 px-4 py-3 text-center text-xs text-starlight-200 flex items-center justify-center gap-1.5">
+                <Lock className="w-3.5 h-3.5" />
+                <span>通关第 {selectedLevel.id - 1} 关后即可解锁本关</span>
+              </div>
+            )}
           </div>
         </div>
       )}

@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import {
   ASSETS_MANIFEST,
+  assetManager,
   drawObstacleOnCanvas,
   drawTileOnCanvas,
 } from '../config/assetsManifest';
@@ -59,11 +60,27 @@ export const TileCanvasPreview: React.FC<TileCanvasPreviewProps> = ({
     };
 
     paint(0);
+    let cancelled = false;
+    const pathsToPreload: string[] = [];
+    if (special === 'butterfly') {
+      pathsToPreload.push(ASSETS_MANIFEST.specials.butterfly);
+    } else {
+      pathsToPreload.push(ASSETS_MANIFEST.tiles[color]);
+    }
+    if (obstacle) {
+      pathsToPreload.push(ASSETS_MANIFEST.obstacles[obstacle]);
+    }
+
     if (animated) {
       rafId = requestAnimationFrame(paint);
+    } else {
+      void Promise.all(pathsToPreload.map((p) => assetManager.preload(p))).then(() => {
+        if (!cancelled) paint(0);
+      });
     }
 
     return () => {
+      cancelled = true;
       if (rafId) cancelAnimationFrame(rafId);
     };
   }, [color, special, obstacle, size, animated]);

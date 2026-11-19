@@ -15,12 +15,15 @@ export const ASSETS_MANIFEST = {
     emerald: '/assets/tiles/tile_emerald.png',
   } as Record<TileColor, string>,
 
+  /**
+   * 特效贴图：
+   * - 4 消星流花（line_h / line_v）与 T/L 5 消花爆星核（bomb）坚持在 6 张基础花朵之上
+   *   由 Canvas 2D 动态叠加旋转星环、流光带与呼吸星芒，无需额外底图。
+   * - 仅星穹琉璃蝶（魔力鸟）为独立造型，支持可选外部贴图覆盖。
+   */
   specials: {
-    line_h: '/assets/tiles/special_line_h.png',
-    line_v: '/assets/tiles/special_line_v.png',
-    bomb: '/assets/tiles/special_bomb.png',
-    butterfly: '/assets/tiles/special_butterfly.png',
-  } as Record<Exclude<SpecialType, 'none'>, string>,
+    butterfly: '/assets/tiles/tile_rainbow.png',
+  },
 
   obstacles: {
     ice_1: '/assets/obstacles/ice_1.png',
@@ -31,10 +34,15 @@ export const ASSETS_MANIFEST = {
   } as Record<ObstacleType, string>,
 
   bg: {
-    splash: '/assets/bg/splash.jpg',
-    day: '/assets/bg/bg_day.jpg',
-    night: '/assets/bg/bg_night.jpg',
-    map: '/assets/bg/map_bg.jpg',
+    splash: '/assets/bg/bg_splash.webp',
+    day: '/assets/bg/bg_play_day.webp',
+    night: '/assets/bg/bg_play_night.webp',
+    map: '/assets/bg/bg_map_1.webp',
+    mapChapters: [
+      '/assets/bg/bg_map_1.webp',
+      '/assets/bg/bg_map_2.webp',
+      '/assets/bg/bg_map_3.webp',
+    ] as const,
   },
 
   ui: {
@@ -50,11 +58,11 @@ export const ASSETS_MANIFEST = {
       yawn: '/assets/ui/fox_yawn.png',
     } as Record<FoxMood, string>,
     postcards: {
-      1: '/assets/ui/postcard_1.jpg',
-      2: '/assets/ui/postcard_2.jpg',
-      3: '/assets/ui/postcard_3.jpg',
-      4: '/assets/ui/postcard_4.jpg',
-      5: '/assets/ui/postcard_5.jpg',
+      1: '/assets/ui/postcard_1.webp',
+      2: '/assets/ui/postcard_2.webp',
+      3: '/assets/ui/postcard_3.webp',
+      4: '/assets/ui/postcard_4.webp',
+      5: '/assets/ui/postcard_5.webp',
     } as Record<number, string>,
   },
 
@@ -202,6 +210,10 @@ class AssetManager {
       ...Object.values(ASSETS_MANIFEST.obstacles),
       ...Object.values(ASSETS_MANIFEST.ui.props),
       ...Object.values(ASSETS_MANIFEST.ui.fox),
+      ASSETS_MANIFEST.bg.splash,
+      ASSETS_MANIFEST.bg.day,
+      ASSETS_MANIFEST.bg.night,
+      ASSETS_MANIFEST.bg.map,
     ];
     await Promise.all(paths.map((p) => this.preload(p)));
   }
@@ -243,19 +255,9 @@ export function drawTileOnCanvas(
   }
 
   if (special === 'line_h' || special === 'line_v') {
-    const overlayImg = assetManager.getImage(ASSETS_MANIFEST.specials[special]);
-    if (overlayImg) {
-      ctx.drawImage(overlayImg, -radius * 1.05, -radius * 1.05, radius * 2.1, radius * 2.1);
-    } else {
-      drawFallbackLineOverlay(ctx, radius, special === 'line_h', timeMs);
-    }
+    drawFallbackLineOverlay(ctx, radius, special === 'line_h', timeMs);
   } else if (special === 'bomb') {
-    const bombImg = assetManager.getImage(ASSETS_MANIFEST.specials.bomb);
-    if (bombImg) {
-      ctx.drawImage(bombImg, -radius * 1.08, -radius * 1.08, radius * 2.16, radius * 2.16);
-    } else {
-      drawFallbackBombOverlay(ctx, radius, timeMs);
-    }
+    drawFallbackBombOverlay(ctx, radius, timeMs);
   }
 
   ctx.restore();

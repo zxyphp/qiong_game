@@ -125,7 +125,15 @@ export const AssetShowcaseModal: React.FC<AssetShowcaseModalProps> = ({ open, on
                   <TileCanvasPreview color={sp.color} special={sp.type} size={52} animated />
                   <div className="min-w-0">
                     <div className="text-xs font-medium truncate">{sp.name}</div>
-                    <div className="mt-1">{badge(ASSETS_MANIFEST.specials[sp.type])}</div>
+                    <div className="mt-1">
+                      {sp.type === 'butterfly' ? (
+                        badge(ASSETS_MANIFEST.specials.butterfly)
+                      ) : (
+                        <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-amber-400/20 text-amber-200 border border-amber-400/30">
+                          Canvas 动态叠加
+                        </span>
+                      )}
+                    </div>
                   </div>
                 </div>
               ))}

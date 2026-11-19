@@ -4,7 +4,7 @@ import { ThemeMode } from '../types/game';
 
 interface StarfieldCanvasProps {
   theme: ThemeMode;
-  variant?: 'home' | 'map';
+  variant?: 'home' | 'map' | 'game';
 }
 
 interface Star {
@@ -42,11 +42,13 @@ export const StarfieldCanvas: React.FC<StarfieldCanvasProps> = ({ theme, variant
     if (!ctx) return;
 
     const bgPath =
-      variant === 'map'
-        ? ASSETS_MANIFEST.bg.map
-        : theme === 'night'
-          ? ASSETS_MANIFEST.bg.night
-          : ASSETS_MANIFEST.bg.day;
+      variant === 'home'
+        ? ASSETS_MANIFEST.bg.splash
+        : variant === 'map'
+          ? ASSETS_MANIFEST.bg.map
+          : theme === 'night'
+            ? ASSETS_MANIFEST.bg.night
+            : ASSETS_MANIFEST.bg.day;
     void assetManager.preload(bgPath);
 
     let width = window.innerWidth;

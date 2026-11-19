@@ -8,3 +8,4 @@
 - `fox_cheer.png` — 小花狐应援递花立绘
 - `fox_yawn.png` — 小花狐打哈欠提醒立绘
 - `postcard_1.jpg` ~ `postcard_5.jpg` — 星海纪念明信片插画（每 10 关解锁一张）
+
