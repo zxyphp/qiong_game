@@ -1,0 +1,28 @@
+# Python / uv
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+.pytest_cache/
+.ruff_cache/
+.coverage
+coverage.xml
+htmlcov/
+
+# Local runtime state & outputs
+/data/
+output/
+.env
+*.sqlite3
+*.sqlite3-wal
+*.sqlite3-shm
+*.lock
+!/uv.lock
+
+# OS / Editor
+.DS_Store
+.workbuddy-ai/
+
+.idea
+
+
